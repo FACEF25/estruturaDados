@@ -8,23 +8,37 @@
       primeiro a entrar, primeiro a sair).
     - A principal aplicação das filas são situações que envolvem o processamento de 
       tarefas por ordem de chegada.
+*//*
+    ESTRUTURA DE DADOS FILA (Modificada para o Exercício 1)
 */
 export default class Queue {
 
-    #data       // Vetor privado
+    #data           // Vetor privado
+    #operationCount // Variável privada para contagem (Regra 1)
 
     constructor() {
-        this.#data = []     // Vetor vazio
+        this.#data = [] 
+        this.#operationCount = 0 // Inicializa o contador em zero
     }
 
     // Método para inserção na fila
     enqueue(val) {
         this.#data.push(val)
+        this.#operationCount++ // Incrementa a cada inserção
     }
 
     // Método para remoção da fila
     dequeue() {
-        return this.#data.shift()    
+        if (!this.isEmpty) {
+            this.#operationCount++ // Incrementa a cada remoção bem-sucedida
+            return this.#data.shift()
+        }
+        return undefined
+    }
+
+    // Método que retorna o total de operações (Regra 2)
+    getOperationCount() {
+        return this.#operationCount
     }
 
     // Método para consultar o início da fila sem remover o elemento
@@ -33,12 +47,11 @@ export default class Queue {
     }
 
     // Getter para informar se a fila está ou não vazia
-    // (propriedade somente leitura)
     get isEmpty() {
       return this.#data.length === 0
     }
 
-    // Método que imprime a fila (para efeitos de depuração)
+    // Método que imprime a fila
     print() {
       let output = '[ '
       for(let i = 0; i < this.#data.length; i++) {
